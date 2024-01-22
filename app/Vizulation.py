@@ -14,7 +14,7 @@ import plotly.express as px
 
 # }
 mydb = {
-    'host' : 'dpg-cmmvudocmk4c73e4qfh0-a',
+    'host' : 'dpg-cmmvudocmk4c73e4qfh0-a.oregon-postgres.render.com',
     'database' : 'guvi_yby8',
     'user' :'guvi_yby8_user',
     'password' : 'MFyUGk2fbpvmiRZ8FaXIBt56uXD9eMWc',
@@ -22,6 +22,24 @@ mydb = {
 }
 connection = psycopg2.connect(**mydb)
 cursor = connection.cursor()
+
+
+# DATABASE_URI =  "postgresql://guvi_yby8_user:MFyUGk2fbpvmiRZ8FaXIBt56uXD9eMWc@dpg-cmmvudocmk4c73e4qfh0-a.oregon-postgres.render.com:5432/guvi_yby8"
+        
+
+# engine = create_engine(DATABASE_URI)
+# SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+# Base = declarative_base()
+
+# def CreateTables():
+#     Base.metadata.create_all(bind=engine)
+
+# def get_db():
+#     db = SessionLocal()
+#     try:
+#         yield db
+#     finally:
+#         db.close()
 
 ######################################## DB config End ##########################################
 
