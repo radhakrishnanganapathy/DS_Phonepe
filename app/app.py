@@ -8,8 +8,9 @@ import plotly.graph_objects as go
 
 file_path = r'Z:\radhakrishnan\DS_Phonepe\data\top\transaction\country\india\2018\1.json'
 file_2019 = r'Z:\radhakrishnan\DS_Phonepe\data\top\transaction\country\india\2019\1.json'
+git_file = 'https://github.com/radhakrishnanganapathy/DS_Phonepe/blob/main/data/top/transaction/country/india/2018/1.json'
 
-year = st.sidebar.selectbox('select' , [file_path,file_2019])
+year = st.sidebar.selectbox('select' , [file_path,file_2019,git_file])
 
 with open(year, 'r') as json_file:
      json_data = json.load(json_file)
