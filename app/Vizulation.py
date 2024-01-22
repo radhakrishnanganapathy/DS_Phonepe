@@ -5,13 +5,20 @@ import plotly.express as px
 
 
 ####################################### DB Config ###############################################
-mydb = {
-    'host' : 'localhost',
-    'database' : 'phonepe',
-    'user' :'postgres',
-    'password' : 'ags009',
-    'port' : '5432'
+# mydb = {
+#     'host' : 'localhost',
+#     'database' : 'phonepe',
+#     'user' :'postgres',
+#     'password' : 'ags009',
+#     'port' : '5432'
 
+# }
+mydb = {
+    'host' : 'dpg-cmmvudocmk4c73e4qfh0-a',
+    'database' : 'guvi_yby8',
+    'user' :'guvi_yby8_user',
+    'password' : 'MFyUGk2fbpvmiRZ8FaXIBt56uXD9eMWc',
+    'port' : '5432'
 }
 connection = psycopg2.connect(**mydb)
 cursor = connection.cursor()
