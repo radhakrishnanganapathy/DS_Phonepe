@@ -16,7 +16,7 @@ response = requests.get(git_file)
 #      json_data = json.load(json_file)
 
 json_data = response.json()
-st.write(json_data.key())
+st.write(json_data.keys())
 data = json_data.get("data",{})
 df_states = data.get("states", [])
 # Flatten the nested structure
