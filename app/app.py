@@ -12,8 +12,10 @@ git_file = 'https://github.com/radhakrishnanganapathy/DS_Phonepe/blob/main/data/
 
 year = st.sidebar.selectbox('select' , [file_path,file_2019,git_file])
 response = requests.get(year)
-with open(response, 'r') as json_file:
-     json_data = json.load(json_file)
+# with open(response, 'r') as json_file:
+#      json_data = json.load(json_file)
+
+json_data = response.json()
 
 data = json_data.get("data",{})
 df_states = data.get("states", [])
