@@ -11,12 +11,12 @@ file_2019 = r'Z:\radhakrishnan\DS_Phonepe\data\top\transaction\country\india\201
 git_file = 'https://github.com/radhakrishnanganapathy/DS_Phonepe/blob/main/data/top/transaction/country/india/2018/1.json'
 
 year = st.sidebar.selectbox('select' , [file_path,file_2019,git_file])
-response = requests.get(git_file)
-# with open(response, 'r') as json_file:
-#      json_data = json.load(json_file)
+# response = requests.get(git_file)
+with open(year, 'r') as json_file:
+     json_data = json.load(json_file)
 
-json_data = response.json()
-st.write(json_data.keys())
+# json_data = response.json()
+# st.write(json_data.keys())
 data = json_data.get("data",{})
 df_states = data.get("states", [])
 # Flatten the nested structure
