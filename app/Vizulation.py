@@ -3,13 +3,14 @@ import psycopg2
 import pandas as pd
 import plotly.express as px
 from ELT import data_processing
-
+import geopandas as gpd
+import matplotlib.pyplot as plt
 
 
 ####################################### DB Config ###############################################
 mydb = {
     'host' : 'localhost',
-    'database' : 'phonepe',
+    'database' : 'guvi',
     'user' :'postgres',
     'password' : 'ags009',
     'port' : '5432'
@@ -54,6 +55,11 @@ option = st.radio('**Select your Option**',('All India','State Wise','Top Ten'),
 
 if option == "All India":
     tab1, tab2 = st.tabs(['Transaction','User'])
+    india_shapefile_path = 'gadm41_IND_shp/gadm41_IND_1.shp'
+    india = gpd.read_file(india_shapefile_path)
+
+    # world = gpd.read_file(gpd.datasets.get_path('gadm41_IND_shp/gadm41_IND_1.shp'))
+    st.write(india)
 
     with tab1:
         col1, col2, col3 = st.columns(3)
@@ -64,11 +70,35 @@ if option == "All India":
         with col3:
             type = st.selectbox('**Select Type**',('Recharge & bill payments','Financial Services','Merchant payments','Peer-to-peer payments'),key='type')
 
-        cursor.execute(f"select state, transaction_amount from agg_tra where year='{year}' and quarter='{quarter}' and transaction_type='{type}' group by state,transaction_amount")
+        cursor.execute(f"select state, transaction_amount from agg_tra where year='{year}' and quarter='{quarter}' and transaction_type='{type}' group by state,transaction_amount order by transaction_amount desc limit 30" )
+        result = cursor.fetchall()
+        transactions = pd.DataFrame(result,columns=['state','transaction_amount'] )
+        transactions['state'] = transactions['state'].str.upper()
+        india['NAME_1'] = india['NAME_1'].str.upper()
+        india = india.merge(transactions, how='left', left_on='NAME_1', right_on='state')
+        fig, ax = plt.subplots(1, 1, figsize=(15, 15))
+        india.boundary.plot(ax=ax, linewidth=1)
+        india.plot(column='transaction_amount', ax=ax, legend=True, 
+                legend_kwds={'label': "Transaction Amount by State",
+                                'orientation': "horizontal"},
+                cmap='OrRd')  # OrRd colormap for better visual
+        plt.title('Online Payment Transactions by State in India')
+        # plt.show()
+        st.pyplot(fig)
+
+        cursor.execute(f"select state, transaction_amount from agg_tra where year='{year}' and quarter='{quarter}' and transaction_type='{type}' group by state,transaction_amount order by transaction_amount desc limit 10" )
         result = cursor.fetchall()
         df_result = pd.DataFrame(result,columns=['state','transaction_amount'] )
-        pie_chart = px.pie(df_result, values='transaction_amount', names='state', title='phonepay')
+        pie_chart = px.pie(df_result, values='transaction_amount', names='state', title='Top 10 States phonepay')
         st.write(pie_chart)
+
+        least_usegae = (f"select state, transaction_amount from agg_tra where year='{year}' and quarter='{quarter}' and transaction_type='{type}' group by state,transaction_amount order by transaction_amount asc limit 10" )
+        cursor.execute(least_usegae)
+        result_least = cursor.fetchall()
+        df_result_least = pd.DataFrame(result_least,columns=['state','transaction_amount'] )
+        pie_chart_least = px.pie(df_result_least, values='transaction_amount', names='state', title='Least 10 States phonepay')
+        st.write(pie_chart_least)
+
         # st.write(df_result)
     with tab2:
         col1, col2 = st.columns(2)

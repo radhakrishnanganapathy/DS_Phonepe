@@ -239,7 +239,7 @@ def data_processing():
 
     mydb = {
         'host' : 'localhost',
-        'database' : 'phonepe',
+        'database' : 'guvi',
         'user' :'postgres',
         'password' : 'ags009',
         'port' : '5432'
